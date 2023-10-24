@@ -1,0 +1,16 @@
+[Unit]
+Description=Gunicorn instance to serve flask calculator
+
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ec2-user/calculator-webapp
+Environment="PATH=/home/ec2-user/calculator-webapp/venv/bin"
+ExecStart=/home/ec2-user/calculator-webapp/venv/bin/gunicorn calc:app -c /home/ec2-user/calculator-webapp/gunicorn_config.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
