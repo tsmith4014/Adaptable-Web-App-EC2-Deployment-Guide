@@ -1,6 +1,6 @@
 ---
 
-# Adaptable Webapp Deployment Guide
+# Adaptable-Webapp-EC2-Deployment-Guide
 Flexible framework for deploying web applications, particularly tailored for AWS EC2 environments. While the guide is anchored around a Python-Flask Calculator-Webapp, modular design that allows for easy customization and adaptability. Potential tool for DevOps professionals, system administrators, and developers aiming to deploy a wide range of web applications.
 
 Key features of this guide include:
