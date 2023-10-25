@@ -154,9 +154,9 @@ By customizing these aspects, you can reuse the core steps and the deployment sh
     sudo systemctl status calculator-webapp.service
     ```
 
-## Full Deployment Shell Script
+## Full Deployment Shell Script for Automation
 
-For those who prefer an automated approach, you can use the following shell script. Just copy and paste the entire block into your EC2 User Data field or save it as an .sh file and execute it or add it to your EC2 User Data.
+For those who prefer an automated approach, you can use the following shell script. Just copy and paste the entire block into your EC2 User Data field when launching your EC2 instance or after you ssh into your EC2 instance copy and paste the entire block into your terminal and it will automate the deployment process.
 
 ```#!/bin/bash
 
