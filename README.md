@@ -1,8 +1,23 @@
-### Step-By-Step Instruction Guide to Deploy Calculator-Webapp on an EC2 instance
+---
 
-#### Attribution
+# Calculator-Webapp Deployment Guide
 
-Special thanks to Edwin Quito for providing the logic and steps for this README guide.
+A comprehensive guide to deploying the Calculator-Webapp, a cloud-based service that provides a simple yet powerful calculator application. The web application is built using Python and Flask, and is deployable via AWS EC2 instances for maximum scalability and accessibility.
+
+**Additional Optional reference resources in Repository:**
+
+- `user_data.sh`: Automated shell script for EC2 deployment.
+- `calc_app.service`: systemd service file for running the app as a service.
+
+## Table of Contents
+
+- [Introduction](#calculator-webapp-deployment-guide)
+- [Additional Resources in Repository](#additional-resources-in-repository)
+- [Step-By-Step Instruction Guide](#step-by-step-instruction-guide-to-deploy-calculator-webapp-on-an-ec2-instance)
+- [Full Deployment Shell Script](#full-deployment-shell-script)
+- [Attribution](#attribution)
+
+## Step-By-Step Instruction Guide to Deploy Calculator-Webapp on an EC2 instance
 
 1. **SSH into EC2 instance**
    ```bash
@@ -126,3 +141,79 @@ Special thanks to Edwin Quito for providing the logic and steps for this README 
     ```bash
     sudo systemctl status calculator-webapp.service
     ```
+
+## Full Deployment Shell Script
+
+For those who prefer an automated approach, you can use the following shell script. Just copy and paste the entire block into your EC2 User Data field or save it as an .sh file and execute it or add it to your EC2 User Data.
+
+```#!/bin/bash
+
+# Update package manager
+yum update -y
+
+# Install Git
+yum install git -y
+
+# Navigate to ec2-user's home directory
+cd /home/ec2-user/
+
+# Clone the Calculator-Webapp repository
+git clone https://github.com/codeplatoon-devops/calculator-webapp.git
+
+# Navigate to the cloned repository
+cd calculator-webapp
+
+# Install Python-Pip
+yum install python-pip -y
+
+# Append gunicorn to requirements.txt
+echo "gunicorn" >> requirements.txt
+
+# Create Python virtual environment
+python3 -m venv venv
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Create Gunicorn config file
+echo "bind = '0.0.0.0:80'
+workers = 4" > gunicorn_config.py
+
+# Create systemd service file
+echo "[Unit]
+Description=Gunicorn instance to serve calculator-webapp
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ec2-user/calculator-webapp
+Environment=\"PATH=/home/ec2-user/calculator-webapp/venv/bin\"
+ExecStart=/home/ec2-user/calculator-webapp/venv/bin/gunicorn calc:app -c /home/ec2-user/calculator-webapp/gunicorn_config.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target" | tee /etc/systemd/system/calculator-webapp.service > /dev/null
+
+# Reload systemd daemon
+systemctl daemon-reload
+
+# Enable the service
+systemctl enable calculator-webapp.service
+
+# Start the service
+systemctl start calculator-webapp.service
+
+# Check the service status
+systemctl status calculator-webapp.service
+
+
+```
+
+### Attribution
+
+Special thanks to Edwin Quito https://github.com/epquito & Chandradeo Arya https://github.com/chandradeoarya for providing the logic and steps for this README guide.

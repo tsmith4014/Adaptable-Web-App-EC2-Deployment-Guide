@@ -1,6 +1,5 @@
 [Unit]
-Description=Gunicorn instance to serve flask calculator
-
+Description=Gunicorn instance to serve calculator-webapp
 Wants=network.target
 After=syslog.target network-online.target
 
