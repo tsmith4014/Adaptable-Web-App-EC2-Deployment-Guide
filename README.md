@@ -216,4 +216,4 @@ systemctl status calculator-webapp.service
 
 ### Attribution
 
-Special thanks to Edwin Quito https://github.com/epquito & Chandradeo Arya https://github.com/chandradeoarya for providing the logic and steps for this README guide.
+Special thanks to Chandradeo Arya https://github.com/chandradeoarya for creating an awesome calculator Web-app and providing DevOps deployment guidance, as well as Edwin Quito https://github.com/epquito for providing a step-by-step guide that helped organize this README.
